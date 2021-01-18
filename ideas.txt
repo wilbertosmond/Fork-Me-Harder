@@ -3,7 +3,7 @@ MAIN TOPIC: Gender Representation (Bias / Inequality) on Wikipedia
 Preamble: ..., ... . Yet, with ... responsibility to represent this data ... . In this paper, we aim to quantify
           differences in the representation of males and females on Wikipedia.
 
-MAIN SOURCES:
+MAIN SOURCES (Feel free to add, but I feel that these capture the our primary analysis and main theoretical arguments fairly well):
     1. Unsupervised Discovery of Biographical Structure from Text (Bamman & Smith, 2014)
         - Link: https://www.aclweb.org/anthology/Q14-1029.pdf
     2. It's a Man's Wikipedia? Assessing Gender Inequality in an Online Encyclopedia (Wagner, Garcia, Jadidi, Strohmaier, 2015)
