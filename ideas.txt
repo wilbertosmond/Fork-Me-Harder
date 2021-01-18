@@ -1,4 +1,16 @@
-Gender bias / inequality in Wikipedia pages 
+MAIN TOPIC: Gender Bias / Inequality in Wikipedia Pages
+
+Preamble: ..., ... . Yet, with ... responsibility to represent this data ... . In this paper, we aim to quantify
+          differences in the representation of males and females on Wikipedia
+
+DATASETS:
+    META-DATA PROPERTIES, LANGUAGE PROPERTIES
+    1. The DBPedia 2021 dataset [32].3
+    2. The Wikipedia English Dump of October 2014.4
+    3. Inferred gender for Wikipedia biographies by Bamman and
+    Smith [7].5
+
+=======
 Date of Wikipedia pages
 
 https://arxiv.org/pdf/1502.02341.pdf
@@ -11,16 +23,10 @@ greater frequency of the spouse attribute in women
 article length
 page rank
 
-Wikipedia plays a significant role as an educational tool in the west (especially under young children). 
+Wikipedia plays a significant role as an educational tool in the west (especially for young children).
 Mainly used by children
 
 define a few relevant terms and filter for those in order to compare frequency etc for men vs women
-
-META-DATA PROPERTIES, LANGUAGE PROPERTIES
-1. The DBPedia 2014 dataset [32].3
-2. The Wikipedia English Dump of October 2014.4
-3. Inferred gender for Wikipedia biographies by Bamman and
-Smith [7].5
 
 often used words for women (39.4): divorce, marriage, divorced, married, filed, wife, separated, years, ended, later
 
@@ -28,7 +34,7 @@ wikipedia could provide tools that help reduce ... in language for writers
 
 information on infoboxes wiki: https://en.wikipedia.org/wiki/Category:Infobox_templates
 
-
+=======
 Things we can look at:
 - meta-data properties 
     - infoboxes 
@@ -56,3 +62,4 @@ Things we can look at:
     - filter for certain words 
         - ... 
         - believed by some
+
