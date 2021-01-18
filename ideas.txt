@@ -29,12 +29,30 @@ wikipedia could provide tools that help reduce ... in language for writers
 information on infoboxes wiki: https://en.wikipedia.org/wiki/Category:Infobox_templates
 
 
-To do:
+Things we can look at:
 - meta-data properties 
-    - first merge
     - infoboxes 
-        - spouse
-        - education alma mater
-        - net worth
-        -  gender_label, gender
-        - 
+        - gender_label
+        - education
+            -  almaMater_label
+            -  education_label  
+        - job/occupation  
+            - occupation_label
+            - profession_label
+            - networth
+            - knownFor_label
+        - relations (family)
+            - relation_label 
+            - relative_label
+            - spouse_label
+            - child_label
+            - parent_label
+
+
+
+- language properties 
+    - length of article
+    - connection to other pages (men/women)
+    - filter for certain words 
+        - ... 
+        - believed by some
