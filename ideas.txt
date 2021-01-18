@@ -26,6 +26,7 @@ CURRENT SEARCH CRITERIA:
 - Meta-Data Properties
     - DBPedia Dataset
         - gender_label
+            - To be supplemented by Bamman and Smith
         - education
             -  almaMater_label
             -  education_label
