@@ -2,7 +2,7 @@ Gender bias / inequality in Wikipedia pages
 Date of Wikipedia pages
 
 https://arxiv.org/pdf/1502.02341.pdf
-
+[PDF] It's a Man's Wikipedia? Assessing Gender Inequality in an Online Encyclopedia.
 
 men and women 
 women are tied more to men than vice versa
@@ -11,4 +11,30 @@ greater frequency of the spouse attribute in women
 article length
 page rank
 
-wikipedia could provide tools that help reduce sexism in language for writers
+Wikipedia plays a significant role as an educational tool in the west (especially under young children). 
+Mainly used by children
+
+define a few relevant terms and filter for those in order to compare frequency etc for men vs women
+
+META-DATA PROPERTIES, LANGUAGE PROPERTIES
+1. The DBPedia 2014 dataset [32].3
+2. The Wikipedia English Dump of October 2014.4
+3. Inferred gender for Wikipedia biographies by Bamman and
+Smith [7].5
+
+often used words for women (39.4): divorce, marriage, divorced, married, filed, wife, separated, years, ended, later
+
+wikipedia could provide tools that help reduce ... in language for writers
+
+information on infoboxes wiki: https://en.wikipedia.org/wiki/Category:Infobox_templates
+
+
+To do:
+- meta-data properties 
+    - first merge
+    - infoboxes 
+        - spouse
+        - education alma mater
+        - net worth
+        -  gender_label, gender
+        - 
