@@ -1,20 +1,54 @@
-MAIN TOPIC: Gender Bias / Inequality in Wikipedia Pages
+MAIN TOPIC: Gender Representation (Bias / Inequality) on Wikipedia
 
 Preamble: ..., ... . Yet, with ... responsibility to represent this data ... . In this paper, we aim to quantify
-          differences in the representation of males and females on Wikipedia
+          differences in the representation of males and females on Wikipedia.
+
+MAIN SOURCES:
+    1. Unsupervised Discovery of Biographical Structure from Text (Bamman & Smith, 2014)
+        - Link: https://www.aclweb.org/anthology/Q14-1029.pdf
+    2. It's a Man's Wikipedia? Assessing Gender Inequality in an Online Encyclopedia (Wagner, Garcia, Jadidi, Strohmaier, 2015)
+        - Link: https://arxiv.org/abs/1501.06307
 
 DATASETS:
-    META-DATA PROPERTIES, LANGUAGE PROPERTIES
-    1. The DBPedia 2021 dataset [32].3
+    META-DATA PROPERTIES, LANGUAGE PROPERTIES:
+    1. The DBPedia 2021 dataset
     2. The Wikipedia English Dump of October 2014.4
     3. Inferred gender for Wikipedia biographies by Bamman and
     Smith [7].5
 
+DATA PRE-PROCESSING:
+    1. Exclude elements for which domain includes 'fictional character'
+    2. Filter elements for which "date of birth" is known? - This will already reduce element number quite a lot and
+       ensure that we are dealing with actual people.
+    3. Merge lists from People (A-Z; See Scratch.py)
+
+CURRENT SEARCH CRITERIA:
+- Meta-Data Properties
+    - DBPedia Dataset
+        - gender_label
+        - education
+            -  almaMater_label
+            -  education_label
+        - job/occupation
+            - occupation_label
+            - profession_label
+            - networth
+            - knownFor_label
+        - relations (family)
+            - relation_label
+            - relative_label
+            - spouse_label
+            - child_label
+            - parent_label
+
+- Language Properties (To consider for additional analysis)
+    - Length of article
+    - Connection to other pages (men/women)
+    - Filter/Search for prevalence of certain words
+        - ...
+        - believed by some
 =======
 Date of Wikipedia pages
-
-https://arxiv.org/pdf/1502.02341.pdf
-[PDF] It's a Man's Wikipedia? Assessing Gender Inequality in an Online Encyclopedia.
 
 men and women 
 women are tied more to men than vice versa
@@ -35,31 +69,4 @@ wikipedia could provide tools that help reduce ... in language for writers
 information on infoboxes wiki: https://en.wikipedia.org/wiki/Category:Infobox_templates
 
 =======
-Things we can look at:
-- meta-data properties 
-    - infoboxes 
-        - gender_label
-        - education
-            -  almaMater_label
-            -  education_label  
-        - job/occupation  
-            - occupation_label
-            - profession_label
-            - networth
-            - knownFor_label
-        - relations (family)
-            - relation_label 
-            - relative_label
-            - spouse_label
-            - child_label
-            - parent_label
-
-
-
-- language properties 
-    - length of article
-    - connection to other pages (men/women)
-    - filter for certain words 
-        - ... 
-        - believed by some
 
