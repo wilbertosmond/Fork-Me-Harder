@@ -1,0 +1,14 @@
+Gender bias / inequality in Wikipedia pages 
+Date of Wikipedia pages
+
+https://arxiv.org/pdf/1502.02341.pdf
+
+
+men and women 
+women are tied more to men than vice versa
+on women’s pages, family-related issues and romantic relationships are more often mentioned
+greater frequency of the spouse attribute in women
+article length
+page rank
+
+wikipedia could provide tools that help reduce sexism in language for writers
