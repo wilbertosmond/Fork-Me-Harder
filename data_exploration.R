@@ -17,10 +17,11 @@ df1 <- df %>%
          Children=ifelse(Children=='None',0,1),
          Parent=ifelse(Parent=='None',0,1))
 
+# Compute gender percentage for (grouped) features
 df2 <- df1 %>%
   group_by(Gender) %>%
   summarise(Perc_Education = (sum(Alma_Mater)+sum(Education))/nrow(df1),
             Perc_Occupation = (sum(Occupation)+sum(Profession))/nrow(df1),
-            Perc_NetWorth = sum(Occupation)/nrow(df1),
+            Perc_NetWorth = sum(Net_Worth)/nrow(df1),
             Perc_KnownFor = sum(Known_For)/nrow(df1),
             Perc_Family = (sum(Relation)+sum(Relative)+sum(Spouse)+sum(Children)+sum(Parent))/nrow(df1))
