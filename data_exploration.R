@@ -15,7 +15,8 @@ df1 <- df %>%
          Relative=ifelse(Relative=='None',0,1),
          Spouse=ifelse(Spouse=='None',0,1),
          Children=ifelse(Children=='None',0,1),
-         Parent=ifelse(Parent=='None',0,1))
+         Parent=ifelse(Parent=='None',0,1)) %>%
+  filter(!is.na(Relation) & !is.na(Relative) & !is.na(Spouse) & !is.na(Children) & !is.na(Parent) & !is.na(Occupation))
 
 # Compute gender percentage for (grouped) features
 df2 <- df1 %>%
