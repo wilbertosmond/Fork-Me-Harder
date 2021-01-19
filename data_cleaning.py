@@ -31,8 +31,7 @@ people_cleaned = {person['title']: person for person in people_cleaned}
 people_gender = {person['name']: person for person in people_gender}
 
 df = []
-for person in people_gender.keys():
-
+for person in people_cleaned.keys():
 
 # with open('people_data.json', 'w') as f:
 #     json.dump(f)
