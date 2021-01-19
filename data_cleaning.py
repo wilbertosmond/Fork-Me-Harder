@@ -42,6 +42,16 @@ for name in names:
         people_cleaned[name].update({'gender': people_gender[name]})
         people_merge[name] = people_cleaned[name]
 
+# convert cleaned data to csv
+with open('new_df.csv', 'w', encoding='utf8') as file:
+    file.write('Name, Education\n')
+    for entry in people_cleaned:
+        #print(name['first name'])
+        if 'ontology/education_label' in entry:
+            file.write(f"{entry['title']},{entry['ontology/education_label']}\n")
+        else:
+            file.write(f"{entry['title']},'N/A'\n")
+
 
 # df = []
 # for person in people_cleaned.keys():
