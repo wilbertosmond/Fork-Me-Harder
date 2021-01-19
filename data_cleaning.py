@@ -3,12 +3,15 @@ import json
 
 # Convert DBpedia files into single list
 people_data = []
-alpha = ['A', 'B', 'C', "D", 'E', 'F', 'G', 'H', 'I', 'J', 'K', "L", 'M', 'N', 'O', 'P', 'Q', 'R', "S", 'T', 'U', 'V', \
-         'W', 'X', 'Y', 'Z']
-for letter in alpha:
-    with open(f'.\People\{letter}_people.json') as file:
-        data_inter = json.load(file)
-        people_data.extend(data_inter)
+# alpha = ['A', 'B', 'C', "D", 'E', 'F', 'G', 'H', 'I', 'J', 'K', "L", 'M', 'N', 'O', 'P', 'Q', 'R', "S", 'T', 'U', 'V', \
+#          'W', 'X', 'Y', 'Z']
+# for letter in alpha:
+#     with open(f'.\People\{letter}_people.json') as file:
+#         data_inter = json.load(file)
+#         people_data.extend(data_inter)
+with open(f'.\People\A_people.json') as file:
+    data_inter = json.load(file)
+    people_data.extend(data_inter)
 
 # Convert wiki_genders.txt file to dictionary
 with open('wiki_genders.txt', encoding="utf8") as file:
@@ -16,23 +19,32 @@ with open('wiki_genders.txt', encoding="utf8") as file:
     people_gender = {}
     for line in file:
         wiki_id, gender, name = line.strip().split('\t')
-        name = name.replace('_',' ')
+        name = name.replace(' ','_')
         people_gender[name] = gender
-
-# Check if names in wiki_genders.txt file match with those in A_People.json, and then get only those dictionaries
-people_cleaned = {person['title']: person for person in people_cleaned}
-people_gender = {person['name']: person for person in people_gender}
 
 # Preprocessing: Cleaned Dataset removes fictional characters includes entries for which birthYear or birthDate has been reported.
 people_cleaned = []
 for entry in people_data:
     if ('fictional character' not in entry['http://www.w3.org/1999/02/22-rdf-syntax-ns#type_label']) and \
             (('ontology/birthYear' in entry.keys()) or ('ontology/birthDate' in entry.keys())):
-        entry.update({'gender': people_gender[entry['title']]})
         people_cleaned.append(entry)
 
-df = []
-for person in people_cleaned.keys():
+# Convert people_cleaned lists to dicts
+people_cleaned = {person['title']: person for person in people_cleaned}
+# people_gender = {person['name']: person for person in people_gender}
+
+# Check if names in wiki_genders.txt file match with those in A_People.json, and then get only those dictionaries
+names = people_cleaned.keys()
+names_gender = people_gender.keys()
+people_merge = {}
+for name in names:
+    if name in names_gender:
+        people_cleaned[name].update({'gender': people_gender[name]})
+        people_merge[name] = people_cleaned[name]
+
+
+# df = []
+# for person in people_cleaned.keys():
 
 # with open('people_data.json', 'w') as f:
 #     json.dump(f)
