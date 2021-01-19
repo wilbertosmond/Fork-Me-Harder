@@ -1,21 +1,35 @@
-# convert wiki_genders.txt file to dictionary
+# Pre-able: Import libraries
+import json
+
+# Convert DBpedia files into single list
+people_data = []
+alpha = ['A', 'B', 'C', "D", 'E', 'F', 'G', 'H', 'I', 'J', 'K', "L", 'M', 'N', 'O', 'P', 'Q', 'R', "S", 'T', 'U', 'V', \
+         'W', 'X', 'Y', 'Z']
+for letter in alpha:
+    with open(f'.\People\{letter}_people.json') as file:
+        data_inter = json.load(file)
+        people_data.extend(data_inter)
+
+# Convert wiki_genders.txt file to dictionary
 with open('wiki_genders.txt', encoding="utf8") as file:
     headers = file.readline()
-    people = []
+    people_gender = []
     for line in file:
         wiki_id, gender, name = line.strip().split('\t')
-        name = name.replace(' ','_')
-        people.append({'wiki id': wiki_id,
+        name = name.replace('_',' ')
+        people_gender.append({'wiki id': wiki_id,
                       'gender': gender,
                       'name': name})
 
-# check if names in wiki_genders.txt file match with those in A_People.json, and then get only those dictionaries
-import json
-with open('People/A_People.json') as file:
-    A_People = json.load(file)
-    df = []
-    for line1 in people:    
-        for line2 in A_People:
-            if line1['name'] == line2['title']:
-                df.append(line2)
-                break
+# Check if names in wiki_genders.txt file match with those in A_People.json, and then get only those dictionaries
+people_data = {people_data['title']: people_data for person in people_data}
+people_gender = {people_gender['name']: people_gender for person in people_gender}
+
+df = []
+for person in people_gender.keys():
+
+
+
+
+# with open('people_data.json', 'w') as f:
+#     json.dump(f)
