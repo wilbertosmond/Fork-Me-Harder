@@ -10,13 +10,6 @@ for letter in alpha:
         data_inter = json.load(file)
         people_data.extend(data_inter)
 
-# Preprocessing: Cleaned Dataset removes fictional characters includes entries for which birthYear or birthDate has been reported.
-people_cleaned = []
-for entry in people_data:
-    if ('fictional character' not in entry['http://www.w3.org/1999/02/22-rdf-syntax-ns#type_label']) and \
-            (('ontology/birthYear' in entry.keys()) or ('ontology/birthDate' in entry.keys())):
-        people_cleaned.append(entry)
-
 # Convert wiki_genders.txt file to dictionary
 with open('wiki_genders.txt', encoding="utf8") as file:
     headers = file.readline()
@@ -29,6 +22,14 @@ with open('wiki_genders.txt', encoding="utf8") as file:
 # Check if names in wiki_genders.txt file match with those in A_People.json, and then get only those dictionaries
 people_cleaned = {person['title']: person for person in people_cleaned}
 people_gender = {person['name']: person for person in people_gender}
+
+# Preprocessing: Cleaned Dataset removes fictional characters includes entries for which birthYear or birthDate has been reported.
+people_cleaned = []
+for entry in people_data:
+    if ('fictional character' not in entry['http://www.w3.org/1999/02/22-rdf-syntax-ns#type_label']) and \
+            (('ontology/birthYear' in entry.keys()) or ('ontology/birthDate' in entry.keys())):
+        entry.update({'gender': people_gender[entry['title']]})
+        people_cleaned.append(entry)
 
 df = []
 for person in people_gender.keys():
