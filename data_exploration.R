@@ -1,7 +1,7 @@
 library(tidyverse)
 #library(ggthemes)
 setwd("C:/Users/wilbert osmond/Documents/Semester 6/UCACCMET2J/Week 3 - Group Project/accmet2j_demo-master/Fork-Me-Harder")
-df = read_csv('gender_df.csv')
+df = read_csv2('gender_df.csv')
 
 # Count non-NA for each column
 df1 <- df %>%
@@ -16,7 +16,10 @@ df1 <- df %>%
          Spouse=ifelse(Spouse=='None',0,1),
          Children=ifelse(Children=='None',0,1),
          Parent=ifelse(Parent=='None',0,1)) %>%
-  filter(!is.na(Relation) & !is.na(Relative) & !is.na(Spouse) & !is.na(Children) & !is.na(Parent) & !is.na(Occupation))
+  filter(!is.na(Alma_Mater) & !is.na(Education) & 
+         !is.na(Occupation) & !is.na(Profession) & 
+         !is.na(Net_Worth) & !is.na(Known_For) & 
+         !is.na(Relation) & !is.na(Relative) & !is.na(Spouse) & !is.na(Children) & !is.na(Parent))
 
 # Compute gender percentage for (grouped) features
 df2 <- df1 %>%
