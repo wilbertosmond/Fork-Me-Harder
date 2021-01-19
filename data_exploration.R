@@ -5,7 +5,6 @@ df = read_csv('gender_df.csv')
 
 # Count non-NA for each column
 df1 <- df %>%
-  group_by(Gender) %>%
   mutate(Alma_Mater=ifelse(Alma_Mater=='None',0,1),
          Education=ifelse(Education=='None',0,1),
          Occupation=ifelse(Occupation=='None',0,1),
@@ -16,5 +15,12 @@ df1 <- df %>%
          Relative=ifelse(Relative=='None',0,1),
          Spouse=ifelse(Spouse=='None',0,1),
          Children=ifelse(Children=='None',0,1),
-         Parent=ifelse(Parent=='None',0,1)) %>%
-  #summarise(Perc_AlmaMater = sum(Alma_Mater)/ rowwise)
+         Parent=ifelse(Parent=='None',0,1))
+
+df2 <- df1 %>%
+  group_by(Gender) %>%
+  summarise(Perc_Education = (sum(Alma_Mater)+sum(Education))/nrow(df1),
+            Perc_Occupation = (sum(Occupation)+sum(Profession))/nrow(df1),
+            Perc_NetWorth = sum(Occupation)/nrow(df1),
+            Perc_KnownFor = sum(Known_For)/nrow(df1),
+            Perc_Family = (sum(Relation)+sum(Relative)+sum(Spouse)+sum(Children)+sum(Parent))/nrow(df1))
