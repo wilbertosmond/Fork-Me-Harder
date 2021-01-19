@@ -1,5 +1,6 @@
 # Pre-able: Import libraries
 import json
+import csv
 
 # Convert DBpedia files into single list
 people_data = []
@@ -31,7 +32,6 @@ for entry in people_data:
 
 # Convert people_cleaned lists to dicts
 people_cleaned = {person['title']: person for person in people_cleaned}
-# people_gender = {person['name']: person for person in people_gender}
 
 # Check if names in wiki_genders.txt file match with those in A_People.json, and then get only those dictionaries
 names = people_cleaned.keys()
@@ -43,18 +43,14 @@ for name in names:
         people_merge[name] = people_cleaned[name]
 
 # convert cleaned data to csv
-with open('new_df.csv', 'w', encoding='utf8') as file:
-    file.write('Name, Education\n')
-    for entry in people_cleaned:
-        #print(name['first name'])
-        if 'ontology/education_label' in entry:
-            file.write(f"{entry['title']},{entry['ontology/education_label']}\n")
-        else:
-            file.write(f"{entry['title']},'N/A'\n")
-
-
-# df = []
-# for person in people_cleaned.keys():
-
-# with open('people_data.json', 'w') as f:
-#     json.dump(f)
+    # for entry in people_merge:
+    #     #print(name['first name'])
+    #     if 'ontology/education_label' in entry:
+    #         file.write(f"{entry['title']},{entry['ontology/education_label']}\n")
+    #     else:
+    #         file.write(f"{entry['title']},'N/A'\n")
+people_list = list(people_merge.values())
+with open('gender_df.csv', 'w', encoding='utf8') as file:
+    file.write('Name, Gender, Alma_Mater, Education, Occupation, Profession, Net_Worth, Known_For, Relation, Relative, Spouse, Children, Parent\n')
+    for data in people_list:
+        file.write(f"{data.get('title')}, {data.get('gender')}, {data.get('ontology/almaMater_label')}, {data.get('ontology/education_label')}, {data.get('ontology/occupation_label')}, {data.get('ontology/profession_label')}, {data.get('ontology/networth')}, {data.get('ontology/knownFor_label')}, {data.get('ontology/knownFor_label')}, {data.get('ontology/relation_label')}, {data.get('ontology/relative_label')}, {data.get('ontology/spouse_label')}, {data.get('ontology/child_label')}, {data.get('ontology/parent_label')}\n")
