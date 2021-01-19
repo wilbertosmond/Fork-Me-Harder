@@ -20,17 +20,15 @@ for entry in people_data:
 # Convert wiki_genders.txt file to dictionary
 with open('wiki_genders.txt', encoding="utf8") as file:
     headers = file.readline()
-    people_gender = []
+    people_gender = {}
     for line in file:
         wiki_id, gender, name = line.strip().split('\t')
         name = name.replace('_',' ')
-        people_gender.append({'wiki id': wiki_id,
-                      'gender': gender,
-                      'name': name})
+        people_gender[name] = gender
 
 # Check if names in wiki_genders.txt file match with those in A_People.json, and then get only those dictionaries
-people_data = {people_data['title']: people_data for person in people_data}
-people_gender = {people_gender['name']: people_gender for person in people_gender}
+people_cleaned = {person['title']: person for person in people_cleaned}
+people_gender = {person['name']: person for person in people_gender}
 
 df = []
 for person in people_gender.keys():
