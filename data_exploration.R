@@ -28,4 +28,18 @@ df2 <- df1 %>%
             Perc_Occupation = (sum(Occupation)+sum(Profession))/nrow(df1),
             Perc_NetWorth = sum(Net_Worth)/nrow(df1),
             Perc_KnownFor = sum(Known_For)/nrow(df1),
-            Perc_Family = (sum(Relation)+sum(Relative)+sum(Spouse)+sum(Children)+sum(Parent))/nrow(df1))
+            Perc_Family = (sum(Relation)+sum(Relative)+sum(Spouse)+sum(Children)+sum(Parent))/nrow(df1)) %>%
+  pivot_longer(c(2,3, 4, 5, 6),
+               names_to = "Labels",
+               values_to = "Percentages") 
+
+# Plot grouped barchart
+ggplot(data = df2) +
+  aes(fill = Gender, x = Labels, y = Percentages) +
+  geom_bar(position = "dodge", stat = "identity", ) +
+  theme_minimal() +
+  xlab("Attributes") +
+  ylab("Percentage of Occurences") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(title = "Occurence of different attributes in male vs female Wikipedia accounts")
+ggsave('exploratory_plot.jpg')
