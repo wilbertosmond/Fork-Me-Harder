@@ -17,16 +17,19 @@ df1 <- df %>%
          Spouse=ifelse(Spouse=='None',0,1),
          Children=ifelse(Children=='None',0,1),
          Parent=ifelse(Parent=='None',0,1)) %>%
+  mutate(Edu_Group=ifelse(Alma_Mater==1|Education==1,1,0), # Mutates new columns for aggregating education, occupation, and family data
+         Occ_Group=ifelse(Occupation==1|Profession==1,1,0),
+         Family=ifelse(Parent==1|Children==1|Spouse==1|Relative==1|Relation==1,1,0)) %>%
   drop_na()
 
 # Computes relative prevalence of attributes of interest across all (cleaned) 
 # DBpedia entries
 df_ungrouped <- df1 %>%
-  summarise(Perc_Education = (sum(Alma_Mater)+sum(Education))/n(),
-            Perc_Occupation = (sum(Occupation)+sum(Profession))/n(),
+  summarise(Perc_Education = sum(Edu_Group)/n(),
+            Perc_Occupation = sum(Occ_Group)/n(),
             Perc_NetWorth = sum(Net_Worth)/n(),
             Perc_KnownFor = sum(Known_For)/n(),
-            Perc_Family = (sum(Relation)+sum(Relative)+sum(Spouse)+sum(Children)+sum(Parent))/n()) %>%
+            Perc_Family = sum(Family)/n()) %>%
   pivot_longer(c(1, 2, 3, 4, 5),
                names_to = "Labels",
                values_to = "Percentages")
@@ -34,11 +37,11 @@ df_ungrouped <- df1 %>%
 # Plots Ungrouped Attribute Prevalence
 ggplot(data = df_ungrouped) +
   aes(x = Labels, y = Percentages) +
-  geom_bar(color = 'black', fill = '#FFC300', position = "dodge", stat = "identity", ) +
+  geom_bar(position = "dodge", stat = "identity") +
   theme_clean() +
   xlab("Metadata Attributes") +
   ylab("Entries Containing Attribute (%)") +
-  scale_x_discrete(labels=c("Education", "Occupation", "Net-Worth", "Known For", "Relation", "Relative", "Spouse", "Children", "Parent")) +
+  scale_x_discrete(labels=c("Education", "Family", "Known For", "Net Worth", "Occupation")) +
   scale_y_continuous(limits = c(0, 0.2), n.breaks = 6, labels = scales::percent) +
   labs(title = "Relative Prevalence of Metadata Attributes in Wikipedia Biographies")
 ggsave('bargraph_ungrouped.pdf')
@@ -46,9 +49,9 @@ ggsave('bargraph_ungrouped.pdf')
 # Computes relative prevalence of (cleaned) attributes of interest grouped by gender
 df_grouped <- df1 %>%
   group_by(Gender) %>%
-  summarise(Perc_Education = (sum(Alma_Mater)+sum(Education))/n(),
-            Perc_Occupation = (sum(Occupation)+sum(Profession))/n(),
-            Perc_Family = (sum(Relation)+sum(Relative)+sum(Spouse)+sum(Children)+sum(Parent))/n()) %>%
+  summarise(Perc_Education = sum(Edu_Group)/n(),
+            Perc_Occupation = sum(Occ_Group)/n(),
+            Perc_Family = sum(Family)/n()) %>%
   pivot_longer(c(2, 3, 4),
                names_to = "Labels",
                values_to = "Percentages")
@@ -64,7 +67,7 @@ df_fam_grouped <- df1 %>%
                names_to = "Labels",
                values_to = "Percentages")
 
-# Plots 
+# Plots Grouped Bargraphs for Relative Prevalence of Metadata Attributes by Gender
 ggplot(data = df_grouped) +
   aes(fill = Gender, x = Labels, y = Percentages) +
   geom_bar(position = "dodge", stat = "identity", ) +
@@ -76,6 +79,7 @@ ggplot(data = df_grouped) +
   labs(title = "Relative Prevalence of Metadata Attributes by Gender")
 ggsave('bargraph_grouped.pdf')
 
+# Plots Grouped Bargraphs for Relative Prevalence of Family-Related Metadata Attributes by Gender
 ggplot(data = df_fam_grouped) +
   aes(fill = Gender, x = Labels, y = Percentages) +
   geom_bar(position = "dodge", stat = "identity", ) +
@@ -84,7 +88,7 @@ ggplot(data = df_fam_grouped) +
   ylab("Entries Containing Attribute (% by Gender)") +
   scale_x_discrete(labels=c("Children", "Parent", "Relation","Relative","Spouse")) +
   scale_y_continuous(labels = scales::percent) +
-  labs(title = "Relative Prevalence of Family Metadata Attributes by Gender")
+  labs(title = "Relative Prevalence of Family-Related Metadata Attributes by Gender")
 ggsave('bargraph_fam_grouped.pdf')
 
 # Total DBpedia Entries: 1,517,815
