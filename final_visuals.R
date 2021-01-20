@@ -1,10 +1,11 @@
+# Preamble: Load libraries and read in DataFrame
+
 library(tidyverse)
-install.packages("ggthemes")
 library(ggthemes)
-setwd("~/Fork-Me-Harder")
 df = read_delim('gender_df.csv', ';')
 
-# Count non-NA for each column
+# Mutate Columns to indicate 0 (Absence) or 1 (Presence) for each metadata 
+# attribute of interest and remove rows for which NA values are present
 df1 <- df %>%
   mutate(Alma_Mater=ifelse(Alma_Mater=='None',0,1),
          Education=ifelse(Education=='None',0,1),
@@ -17,19 +18,14 @@ df1 <- df %>%
          Spouse=ifelse(Spouse=='None',0,1),
          Children=ifelse(Children=='None',0,1),
          Parent=ifelse(Parent=='None',0,1)) %>%
-  filter(!is.na(Alma_Mater) & !is.na(Education) &
-           !is.na(Occupation) & !is.na(Profession) &
-           !is.na(Net_Worth) & !is.na(Known_For) &
-           !is.na(Relation) & !is.na(Relative) & !is.na(Spouse) & !is.na(Children) & !is.na(Parent))
+  drop_na()
 
-# Compute gender percentage for (grouped) features
-#in the sum function there is an arg. called sum.r
+# Compute gender percentage for (grouped) features in the sum function there is 
+# an arg. called sum.rm . Plot the relative percentages without gender splitting
 
-
-
-# Plot the relative percentages without gender splitting
-
-df3 <- df1 %>%
+# Computes relative prevalence of attributes of interest across all (cleaned) 
+# DBpedia entries
+df_ungrouped <- df1 %>%
   summarise(Perc_Education = (sum(Alma_Mater)+sum(Education))/n(),
             Perc_Occupation = (sum(Occupation)+sum(Profession))/n(),
             Perc_NetWorth = sum(Net_Worth)/n(),
@@ -39,45 +35,46 @@ df3 <- df1 %>%
                names_to = "Labels",
                values_to = "Percentages") 
 
-
-ggplot(data = df3) +
+ggplot(data = df_ungrouped) +
   aes(x = Labels, y = Percentages) +
-  geom_bar(position = "dodge", stat = "identity", ) +
-  theme_minimal() +
-  xlab("Attributes") +
-  ylab("Relative Prevalence (%)") +
+  geom_bar(color = 'black', fill = '#FFC300', position = "dodge", stat = "identity", ) +
+  theme_clean() +
+  xlab("Metadata Attributes") +
+  ylab("Entries Containing Attribute (%)") +
   scale_x_discrete(labels=c("Education", "Relation", "Known For", "Net-Worth", "Occupation")) +
-  scale_y_continuous(labels = scales::percent) +
-  labs(title = "Relative Prevalence of Metadata attributes across Wikipedia Biographies")
-ggsave('withoutgender.pdf')
+  scale_y_continuous(limits = c(0, 0.2), n.breaks = 6, labels = scales::percent) +
+  labs(title = "Relative Prevalence of Metadata Attributes in Wikipedia Biographies")
+
+ggsave('bargraph_ungrouped.pdf')
 
 
 
 
 # Plot the relative occurrences by gender without Net-Worth because 
-# Previous visualization revealed that it was barely present across all entries (less than 1%)
-
-
-df2 <- df1 %>%
+# Previous visualization revealed that it was barely present across all entries 
+# (less than 1%)
+df_grouped <- df1 %>%
   group_by(Gender) %>%
   summarise(Perc_Education = (sum(Alma_Mater)+sum(Education))/n(),
             Perc_Occupation = (sum(Occupation)+sum(Profession))/n(),
-            #Perc_NetWorth = sum(Net_Worth)/n(),
-            Perc_KnownFor = sum(Known_For)/n(),
             Perc_Family = (sum(Relation)+sum(Relative)+sum(Spouse)+sum(Children)+sum(Parent))/n()) %>%
-  pivot_longer(c(2, 3, 4, 5),
+  pivot_longer(c(2, 3, 4),
                names_to = "Labels",
                values_to = "Percentages") 
 
 #data.m <- melt(data, id.vars='Names')
 
-ggplot(data = df2) +
+ggplot(data = df_grouped) +
   aes(fill = Gender, x = Labels, y = Percentages) +
   geom_bar(position = "dodge", stat = "identity", ) +
-  theme_minimal() +
+  theme_clean() +
   xlab("Attributes") +
-  ylab("Relative Prevalence (%)") +
+  ylab("Entries Containing Attribute (% by Gender)") +
   scale_x_discrete(labels=c("Education", "Relation", "Known For", "Occupation")) +
   scale_y_continuous(labels = scales::percent) +
-  labs(title = "Relative Prevalence of Metadata attributes by Gender")
-ggsave('withgender.pdf')
+  labs(title = "Relative Prevalence of Metadata Attributes by Gender")
+ggsave('bargraph_grouped.pdf')
+
+# Total DBpedia Entries: 1,517,815
+# Cleaned DBpedia Entries (excl. Fictional Characters & Entries w/o birthDate/birthYear): 975,235
+# Total Entries Merged Dataset: 631,258
