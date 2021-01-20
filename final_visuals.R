@@ -1,6 +1,7 @@
 # Preamble: Load libraries and read in DataFrame
 library(tidyverse)
 library(ggthemes)
+setwd("~/Documents/data analysis week 3/Fork-Me-Harder")
 df = read_delim('gender_df.csv', ';')
 
 # Mutate Columns to indicate 0 (Absence) or 1 (Presence) for each metadata 
@@ -34,7 +35,7 @@ df_ungrouped <- df1 %>%
 # Plots Ungrouped Attribute Prevalence
 ggplot(data = df_ungrouped) +
   aes(x = Labels, y = Percentages) +
-  geom_bar(color = 'black', fill = '#FFC300', position = "dodge", stat = "identity", ) +
+  geom_bar(fill = '#', position = "dodge", stat = "identity", ) +
   theme_clean() +
   xlab("Metadata Attributes") +
   ylab("Entries Containing Attribute (%)") +
