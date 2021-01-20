@@ -30,7 +30,7 @@ df2 <- df1 %>%
             Perc_NetWorth = sum(Net_Worth)/n(),
             Perc_KnownFor = sum(Known_For)/n(),
             Perc_Family = (sum(Relation)+sum(Relative)+sum(Spouse)+sum(Children)+sum(Parent))/n()) %>%
-  pivot_longer(c(2,3, 4, 5, 6),
+  pivot_longer(c(2, 3, 4, 5, 6),
              names_to = "Labels",
              values_to = "Percentages") 
 
