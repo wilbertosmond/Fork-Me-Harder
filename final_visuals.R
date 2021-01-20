@@ -1,7 +1,6 @@
 # Preamble: Load libraries and read in DataFrame
 
 library(tidyverse)
-library(ggthemes)
 df = read_delim('gender_df.csv', ';')
 
 # Mutate Columns to indicate 0 (Absence) or 1 (Presence) for each metadata 
@@ -20,9 +19,6 @@ df1 <- df %>%
          Parent=ifelse(Parent=='None',0,1)) %>%
   drop_na()
 
-# Compute gender percentage for (grouped) features in the sum function there is 
-# an arg. called sum.rm . Plot the relative percentages without gender splitting
-
 # Computes relative prevalence of attributes of interest across all (cleaned) 
 # DBpedia entries
 df_ungrouped <- df1 %>%
@@ -35,6 +31,7 @@ df_ungrouped <- df1 %>%
                names_to = "Labels",
                values_to = "Percentages") 
 
+# Plots Ungrouped Attribute Prevalence
 ggplot(data = df_ungrouped) +
   aes(x = Labels, y = Percentages) +
   geom_bar(color = 'black', fill = '#FFC300', position = "dodge", stat = "identity", ) +
@@ -44,15 +41,9 @@ ggplot(data = df_ungrouped) +
   scale_x_discrete(labels=c("Education", "Relation", "Known For", "Net-Worth", "Occupation")) +
   scale_y_continuous(limits = c(0, 0.2), n.breaks = 6, labels = scales::percent) +
   labs(title = "Relative Prevalence of Metadata Attributes in Wikipedia Biographies")
-
 ggsave('bargraph_ungrouped.pdf')
 
-
-
-
-# Plot the relative occurrences by gender without Net-Worth because 
-# Previous visualization revealed that it was barely present across all entries 
-# (less than 1%)
+# Computes relative prevalence of (cleaned) attributes of interest grouped by gender
 df_grouped <- df1 %>%
   group_by(Gender) %>%
   summarise(Perc_Education = (sum(Alma_Mater)+sum(Education))/n(),
@@ -62,15 +53,14 @@ df_grouped <- df1 %>%
                names_to = "Labels",
                values_to = "Percentages") 
 
-#data.m <- melt(data, id.vars='Names')
-
+# Plots 
 ggplot(data = df_grouped) +
   aes(fill = Gender, x = Labels, y = Percentages) +
   geom_bar(position = "dodge", stat = "identity", ) +
   theme_clean() +
   xlab("Attributes") +
   ylab("Entries Containing Attribute (% by Gender)") +
-  scale_x_discrete(labels=c("Education", "Relation", "Known For", "Occupation")) +
+  scale_x_discrete(labels=c("Education", "Relation", "Occupation")) +
   scale_y_continuous(labels = scales::percent) +
   labs(title = "Relative Prevalence of Metadata Attributes by Gender")
 ggsave('bargraph_grouped.pdf')
