@@ -56,6 +56,7 @@ df_grouped <- df1 %>%
                names_to = "Labels",
                values_to = "Percentages")
 
+# Computes relative prevalence of Family-related attributes by gender
 df_fam_grouped <- df1 %>%
   group_by(Gender) %>%
   summarise(Perc_Relation = sum(Relation)/n(),
