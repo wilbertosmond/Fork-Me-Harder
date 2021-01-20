@@ -1,7 +1,6 @@
 library(tidyverse)
 install.packages("ggthemes")
 library(ggthemes)
-#library(ggthemes)
 setwd("~/Fork-Me-Harder")
 df = read_delim('gender_df.csv', ';')
 
