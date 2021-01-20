@@ -37,7 +37,7 @@ df_ungrouped <- df1 %>%
 # Plots Ungrouped Attribute Prevalence
 ggplot(data = df_ungrouped) +
   aes(x = Labels, y = Percentages) +
-  geom_bar(position = "dodge", stat = "identity") +
+  geom_bar(fill = '#666666', position = "dodge", stat = "identity") +
   theme_clean() +
   xlab("Metadata Attributes") +
   ylab("Entries Containing Attribute (%)") +
@@ -67,7 +67,7 @@ df_fam_grouped <- df1 %>%
                names_to = "Labels",
                values_to = "Percentages")
 
-# Plots Grouped Bargraphs for Relative Prevalence of Metadata Attributes by Gender
+# Plots Grouped Bar Graphs for Relative Prevalence of Metadata Attributes by Gender
 ggplot(data = df_grouped) +
   aes(fill = Gender, x = Labels, y = Percentages) +
   geom_bar(position = "dodge", stat = "identity", ) +
