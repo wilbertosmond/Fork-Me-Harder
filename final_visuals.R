@@ -1,7 +1,6 @@
 # Preamble: Load libraries and read in DataFrame
 library(tidyverse)
 library(ggthemes)
-setwd("~/Semester 6/UCACCMET2J/Week 3 - Group Project/Fork-Me-Harder")
 df = read_delim('gender_df.csv', ';')
 
 # Mutate Columns to indicate 0 (Absence) or 1 (Presence) for each metadata 
