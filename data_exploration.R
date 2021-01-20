@@ -1,7 +1,9 @@
 library(tidyverse)
+install.packages("ggthemes")
+library(ggthemes)
 #library(ggthemes)
-setwd("C:/Users/wilbert osmond/Documents/Semester 6/UCACCMET2J/Week 3 - Group Project/accmet2j_demo-master/Fork-Me-Harder")
-df = read_csv2('gender_df.csv')
+setwd("~/Fork-Me-Harder")
+df = read_delim('gender_df.csv', ';')
 
 # Count non-NA for each column
 df1 <- df %>%
@@ -16,24 +18,24 @@ df1 <- df %>%
          Spouse=ifelse(Spouse=='None',0,1),
          Children=ifelse(Children=='None',0,1),
          Parent=ifelse(Parent=='None',0,1)) %>%
-  filter(!is.na(Alma_Mater) & !is.na(Education) & 
-         !is.na(Occupation) & !is.na(Profession) & 
-         !is.na(Net_Worth) & !is.na(Known_For) & 
-         !is.na(Relation) & !is.na(Relative) & !is.na(Spouse) & !is.na(Children) & !is.na(Parent))
+  filter(!is.na(Relation) & !is.na(Relative) & !is.na(Spouse) & !is.na(Children) & !is.na(Parent) & !is.na(Occupation))
 
 # Compute gender percentage for (grouped) features
+#in the sum function there is an arg. called sum.r
+
 df2 <- df1 %>%
   group_by(Gender) %>%
-  summarise(Perc_Education = (sum(Alma_Mater)+sum(Education))/nrow(df1),
-            Perc_Occupation = (sum(Occupation)+sum(Profession))/nrow(df1),
-            Perc_NetWorth = sum(Net_Worth)/nrow(df1),
-            Perc_KnownFor = sum(Known_For)/nrow(df1),
-            Perc_Family = (sum(Relation)+sum(Relative)+sum(Spouse)+sum(Children)+sum(Parent))/nrow(df1)) %>%
+  summarise(Perc_Education = (sum(Alma_Mater)+sum(Education))/n(),
+            Perc_Occupation = (sum(Occupation)+sum(Profession))/n(),
+            Perc_NetWorth = sum(Net_Worth)/n(),
+            Perc_KnownFor = sum(Known_For)/n(),
+            Perc_Family = (sum(Relation)+sum(Relative)+sum(Spouse)+sum(Children)+sum(Parent))/n()) %>%
   pivot_longer(c(2,3, 4, 5, 6),
-               names_to = "Labels",
-               values_to = "Percentages") 
+             names_to = "Labels",
+             values_to = "Percentages") 
 
-# Plot grouped barchart
+#data.m <- melt(data, id.vars='Names')
+
 ggplot(data = df2) +
   aes(fill = Gender, x = Labels, y = Percentages) +
   geom_bar(position = "dodge", stat = "identity", ) +
@@ -41,5 +43,4 @@ ggplot(data = df2) +
   xlab("Attributes") +
   ylab("Percentage of Occurences") +
   scale_y_continuous(labels = scales::percent) +
-  labs(title = "Occurence of different attributes in male vs female Wikipedia accounts")
-ggsave('exploratory_plot.jpg')
+  labs(title = "Occurence of different attributes in male and female Wikipedia accounts", subtitle = "The Percentages of label Occuranc out of the total Wikipedia Pages in our Sample")
