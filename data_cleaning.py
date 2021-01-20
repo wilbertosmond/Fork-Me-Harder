@@ -1,18 +1,14 @@
-# Pre-able: Import libraries
+# Pre-amble: Import libraries
 import json
-import csv
 
 # Convert DBpedia files into single list
 people_data = []
-# alpha = ['A', 'B', 'C', "D", 'E', 'F', 'G', 'H', 'I', 'J', 'K', "L", 'M', 'N', 'O', 'P', 'Q', 'R', "S", 'T', 'U', 'V', \
-#          'W', 'X', 'Y', 'Z']
-# for letter in alpha:
-#     with open(f'.\People\{letter}_people.json') as file:
-#         data_inter = json.load(file)
-#         people_data.extend(data_inter)
-with open(f'.\People\A_people.json') as file:
-    data_inter = json.load(file)
-    people_data.extend(data_inter)
+alpha = ['A', 'B', 'C', "D", 'E', 'F', 'G', 'H', 'I', 'J', 'K', "L", 'M', 'N', 'O', 'P', 'Q', 'R', "S", 'T', 'U', 'V', \
+         'W', 'X', 'Y', 'Z']
+for letter in alpha:
+    with open(f'.\People\{letter}_people.json') as file:
+        data_inter = json.load(file)
+        people_data.extend(data_inter)
 
 # Convert wiki_genders.txt file to dictionary
 with open('wiki_genders.txt', encoding="utf8") as file:
@@ -42,13 +38,7 @@ for name in names:
         people_cleaned[name].update({'gender': people_gender[name]})
         people_merge[name] = people_cleaned[name]
 
-# convert cleaned data to csv
-    # for entry in people_merge:
-    #     #print(name['first name'])
-    #     if 'ontology/education_label' in entry:
-    #         file.write(f"{entry['title']},{entry['ontology/education_label']}\n")
-    #     else:
-    #         file.write(f"{entry['title']},'N/A'\n")
+# Write cleaned data to csv
 people_list = list(people_merge.values())
 with open('gender_df.csv', 'w', encoding='utf8') as file:
     file.write('Name,Gender,Alma_Mater,Education,Occupation,Profession,Net_Worth,Known_For,Relation,Relative,Spouse,Children,Parent\n'.replace(',',';'))
