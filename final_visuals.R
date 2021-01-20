@@ -35,7 +35,7 @@ df_ungrouped <- df1 %>%
 # Plots Ungrouped Attribute Prevalence
 ggplot(data = df_ungrouped) +
   aes(x = Labels, y = Percentages) +
-  geom_bar(fill = '#', position = "dodge", stat = "identity", ) +
+  geom_bar(fill = '#666666', position = "dodge", stat = "identity", ) +
   theme_clean() +
   xlab("Metadata Attributes") +
   ylab("Entries Containing Attribute (%)") +
