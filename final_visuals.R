@@ -1,6 +1,7 @@
 # Preamble: Load libraries and read in DataFrame
-
 library(tidyverse)
+library(ggthemes)
+setwd("~/Semester 6/UCACCMET2J/Week 3 - Group Project/Fork-Me-Harder")
 df = read_delim('gender_df.csv', ';')
 
 # Mutate Columns to indicate 0 (Absence) or 1 (Presence) for each metadata 
@@ -29,7 +30,7 @@ df_ungrouped <- df1 %>%
             Perc_Family = (sum(Relation)+sum(Relative)+sum(Spouse)+sum(Children)+sum(Parent))/n()) %>%
   pivot_longer(c(1, 2, 3, 4, 5),
                names_to = "Labels",
-               values_to = "Percentages") 
+               values_to = "Percentages")
 
 # Plots Ungrouped Attribute Prevalence
 ggplot(data = df_ungrouped) +
@@ -38,7 +39,7 @@ ggplot(data = df_ungrouped) +
   theme_clean() +
   xlab("Metadata Attributes") +
   ylab("Entries Containing Attribute (%)") +
-  scale_x_discrete(labels=c("Education", "Relation", "Known For", "Net-Worth", "Occupation")) +
+  scale_x_discrete(labels=c("Education", "Occupation", "Net-Worth", "Known For", "Relation", "Relative", "Spouse", "Children", "Parent")) +
   scale_y_continuous(limits = c(0, 0.2), n.breaks = 6, labels = scales::percent) +
   labs(title = "Relative Prevalence of Metadata Attributes in Wikipedia Biographies")
 ggsave('bargraph_ungrouped.pdf')
@@ -51,7 +52,18 @@ df_grouped <- df1 %>%
             Perc_Family = (sum(Relation)+sum(Relative)+sum(Spouse)+sum(Children)+sum(Parent))/n()) %>%
   pivot_longer(c(2, 3, 4),
                names_to = "Labels",
-               values_to = "Percentages") 
+               values_to = "Percentages")
+
+df_fam_grouped <- df1 %>%
+  group_by(Gender) %>%
+  summarise(Perc_Relation = sum(Relation)/n(),
+            Perc_Relative = sum(Relative)/n(),
+            Perc_Spouse = sum(Spouse)/n(),
+            Perc_Children = sum(Children)/n(),
+            Perc_Parent = sum(Parent)/n()) %>%
+  pivot_longer(c(2, 3, 4,5,6),
+               names_to = "Labels",
+               values_to = "Percentages")
 
 # Plots 
 ggplot(data = df_grouped) +
@@ -60,10 +72,21 @@ ggplot(data = df_grouped) +
   theme_clean() +
   xlab("Attributes") +
   ylab("Entries Containing Attribute (% by Gender)") +
-  scale_x_discrete(labels=c("Education", "Relation", "Occupation")) +
+  scale_x_discrete(labels=c("Education", "Family", "Occupation")) +
   scale_y_continuous(labels = scales::percent) +
   labs(title = "Relative Prevalence of Metadata Attributes by Gender")
 ggsave('bargraph_grouped.pdf')
+
+ggplot(data = df_fam_grouped) +
+  aes(fill = Gender, x = Labels, y = Percentages) +
+  geom_bar(position = "dodge", stat = "identity", ) +
+  theme_clean() +
+  xlab("Attributes") +
+  ylab("Entries Containing Attribute (% by Gender)") +
+  scale_x_discrete(labels=c("Children", "Parent", "Relation","Relative","Spouse")) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(title = "Relative Prevalence of Family Metadata Attributes by Gender")
+ggsave('bargraph_fam_grouped.pdf')
 
 # Total DBpedia Entries: 1,517,815
 # Cleaned DBpedia Entries (excl. Fictional Characters & Entries w/o birthDate/birthYear): 975,235
