@@ -116,7 +116,7 @@ ggplot(data = birth_year_df) +
   xlab("Birth Year") +
   ylab("Frequency") +
   scale_x_continuous(limits = c(1500, 2016)) +
-  labs(title = "Male Entries by Birth Year")
+  labs(title = "Male Articles by Birth Year")
 ggsave('histogram_male.pdf')
   
 ggplot(data = birth_year_df) +
@@ -126,5 +126,5 @@ ggplot(data = birth_year_df) +
   xlab("Birth Year") +
   ylab("Frequency") +
   scale_x_continuous(limits = c(1500, 2016)) +
-  labs(title = "Female Entries by Birth Year")
+  labs(title = "Female Articles by Birth Year")
 ggsave('histogram_female.pdf')
