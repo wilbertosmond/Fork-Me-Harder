@@ -98,6 +98,18 @@ ggplot(data = df_fam_grouped) +
   labs(title = "Relative Prevalence of Family-Related Metadata Attributes by Gender")
 ggsave('bargraph_fam_grouped.pdf')
 
+# 
+
+
+ggplot(data = df4) +
+  aes(color = Gender, x = Birth_Year) +
+  geom_histogram() +
+  theme_clean () +
+  xlab("Birth Year") +
+  ylab("Frequency") +
+  theme(axis.text.x = element_text(angle = 70)) +
+  labs(title = "Freqeuncy of Genders per Birth Year")
+
 # Total DBpedia Entries: 1,517,815
 # Cleaned DBpedia Entries (excl. Fictional Characters & Entries w/o birthDate/birthYear): 975,235
 # Total Entries Merged Dataset: 631,258
