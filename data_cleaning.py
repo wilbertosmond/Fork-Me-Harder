@@ -49,7 +49,11 @@ with open('gender_df.csv', 'w', encoding='utf8') as file:
 people_year = []
 for person in people_list:
     if 'ontology/birthYear' in person.keys():
-        people_year.append(person)
+        if isinstance(person['ontology/birthYear'], list):
+            person['ontology/birthYear'] = person['ontology/birthYear'][-1]
+            people_year.append(person)
+        else:
+            people_year.append(person)
     elif 'ontology/birthDate' in person.keys():
         person['ontology/birthYear'] = person['ontology/birthDate'][:4]
         people_year.append(person)
