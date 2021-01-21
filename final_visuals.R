@@ -102,13 +102,29 @@ ggsave('bargraph_fam_grouped.pdf')
 # Cleaned DBpedia Entries (excl. Fictional Characters & Entries w/o birthDate/birthYear): 975,235
 # Total Entries Merged Dataset: 631,258
 
-birth_year_df <- read_csv2('birth_year.csv')
+birth_year_df <- read_csv2('birth_year.csv') %>%
+  mutate(Birth_Year = as.numeric(Birth_Year)) %>%
+  drop_na() %>%
+  filter(10 <= Birth_Year & Birth_Year <= 2016) %>%
+  drop_na() %>%
+  pivot_wider(names_from = Gender, values_from = Birth_Year)
 
 ggplot(data = birth_year_df) +
-  aes(color = Gender, x = Birth_Year) +
-  geom_histogram() +
+  aes(x = MALE) +
+  geom_histogram(fill = '#00BFC4', binwidth = 20) +
   theme_clean () +
   xlab("Birth Year") +
   ylab("Frequency") +
-  theme(axis.text.x = element_text(angle = 70)) +
-  labs(title = "Freqeuncy of Genders per Birth Year")
+  scale_x_continuous(limits = c(1500, 2016)) +
+  labs(title = "Male Entries by Birth Year")
+ggsave('histogram_male.pdf')
+  
+ggplot(data = birth_year_df) +
+  aes(x = FEMALE) +
+  geom_histogram(fill = '#F8766D', binwidth = 20) +
+  theme_clean () +
+  xlab("Birth Year") +
+  ylab("Frequency") +
+  scale_x_continuous(limits = c(1500, 2016)) +
+  labs(title = "Female Entries by Birth Year")
+ggsave('histogram_female.pdf')

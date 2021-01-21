@@ -50,7 +50,7 @@ people_year = []
 for person in people_list:
     if 'ontology/birthYear' in person.keys():
         if isinstance(person['ontology/birthYear'], list):
-            person['ontology/birthYear'] = person['ontology/birthYear'][-1]
+            person['ontology/birthYear'] = max(person['ontology/birthYear'])
             people_year.append(person)
         else:
             people_year.append(person)
