@@ -101,3 +101,14 @@ ggsave('bargraph_fam_grouped.pdf')
 # Total DBpedia Entries: 1,517,815
 # Cleaned DBpedia Entries (excl. Fictional Characters & Entries w/o birthDate/birthYear): 975,235
 # Total Entries Merged Dataset: 631,258
+
+birth_year_df <- read_csv2('birth_year.csv')
+
+ggplot(data = birth_year_df) +
+  aes(color = Gender, x = Birth_Year) +
+  geom_histogram() +
+  theme_clean () +
+  xlab("Birth Year") +
+  ylab("Frequency") +
+  theme(axis.text.x = element_text(angle = 70)) +
+  labs(title = "Freqeuncy of Genders per Birth Year")
