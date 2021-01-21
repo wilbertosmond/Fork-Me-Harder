@@ -29,7 +29,7 @@ for entry in people_data:
 # Convert people_cleaned lists to dicts
 people_cleaned = {person['title']: person for person in people_cleaned}
 
-# Check if names in wiki_genders.txt file match with those in A_People.json, and then get only those dictionaries
+# Check if names in wiki_genders.txt file match with those in DBpedia file, and then get only those dictionaries
 names = people_cleaned.keys()
 names_gender = people_gender.keys()
 people_merge = {}
@@ -44,3 +44,18 @@ with open('gender_df.csv', 'w', encoding='utf8') as file:
     file.write('Name,Gender,Alma_Mater,Education,Occupation,Profession,Net_Worth,Known_For,Relation,Relative,Spouse,Children,Parent\n'.replace(',',';'))
     for data in people_list:
         file.write(f"{data.get('title').replace(';',',')};{data.get('gender')};{data.get('ontology/almaMater_label')};{data.get('ontology/education_label')};{data.get('ontology/occupation_label')};{data.get('ontology/profession_label')};{data.get('ontology/networth')};{data.get('ontology/knownFor_label')};{data.get('ontology/knownFor_label')};{data.get('ontology/relation_label')};{data.get('ontology/relative_label')};{data.get('ontology/spouse_label')};{data.get('ontology/child_label')};{data.get('ontology/parent_label')}\n")
+
+# Creates new list for birth year analysis
+people_year = []
+for person in people_list:
+    if 'ontology/birthYear' in person.keys():
+        people_year.append(person)
+    elif 'ontology/birthDate' in person.keys():
+        person['ontology/birthYear'] = person['ontology/birthDate'][:4]
+        people_year.append(person)
+
+# Write new csv with birth year
+with open('birth_year.csv','w', encoding='utf8') as file:
+    file.write('Name;Gender;Birth_Year\n')
+    for data in people_year:
+        file.write(f"{data.get('title').replace(';', ',')};{data.get('gender')};{data.get('ontology/birthYear')}\n")
