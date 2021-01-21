@@ -23,10 +23,18 @@ df1 <- df %>%
   drop_na()
 
 # Computes Number of Male and Female Entries, and Proportions
-gender_num <- group_by(df1, Gender) %>% summarise(Number = n(), 'Proportion (%)'= n()/nrow(df1))
+gender_num <- group_by(df1, Gender) %>% summarise(Number = n())
 # Entries: Males = 534967, Females = 96257
 # Proportion: Males = 85%, Females = 0.15%
 
+# Plots simple pie chart for Male and Female Entries
+ggplot(gender_num, aes(x="", y=Number, fill=Gender)) +
+  geom_bar(stat="identity", width=1) +
+  coord_polar("y", start=0) +
+  labs(x='', y='') +
+  theme_minimal() +
+  theme(axis.text.x = element_blank(), axis.ticks = element_blank())
+ggsave('piechart_gender.pdf')
 
 # Computes relative prevalence of attributes of interest across all (cleaned) 
 # DBpedia entries
