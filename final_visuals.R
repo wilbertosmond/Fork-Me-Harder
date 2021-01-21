@@ -22,6 +22,12 @@ df1 <- df %>%
          Family=ifelse(Parent==1|Children==1|Spouse==1|Relative==1|Relation==1,1,0)) %>%
   drop_na()
 
+# Computes Number of Male and Female Entries, and Proportions
+gender_num <- group_by(df1, Gender) %>% summarise(Number = n(), 'Proportion (%)'= n()/nrow(df1))
+# Entries: Males = 534967, Females = 96257
+# Proportion: Males = 85%, Females = 0.15%
+
+
 # Computes relative prevalence of attributes of interest across all (cleaned) 
 # DBpedia entries
 df_ungrouped <- df1 %>%
