@@ -107,7 +107,7 @@ ggsave('bargraph_fam_grouped.pdf')
 birth_year_df <- read_csv2('birth_year.csv') %>%
   mutate(Birth_Year = as.numeric(Birth_Year)) %>%
   drop_na() %>%
-  filter(10 <= Birth_Year & Birth_Year <= 2016) %>%
+  filter(10 <= Birth_Year & Birth_Year <= 2014) %>%
   drop_na() %>%
   pivot_wider(names_from = Gender, values_from = Birth_Year)
 
