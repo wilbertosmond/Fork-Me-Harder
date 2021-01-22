@@ -1,7 +1,7 @@
 # Preamble: Load libraries and read in DataFrame
 library(tidyverse)
 library(ggthemes)
-df = read_delim('gender_df.csv', ';')
+df = read_csv2('gender_df.csv')
 
 # Mutate Columns to indicate 0 (Absence) or 1 (Presence) for each metadata 
 # attribute of interest and remove rows for which NA values are present
@@ -27,15 +27,6 @@ gender_num <- group_by(df1, Gender) %>% summarise(Number = n())
 # Entries: Males = 534967, Females = 96257
 # Proportion: Males = 85%, Females = 0.15%
 
-# Plots simple pie chart for Male and Female Entries
-ggplot(gender_num, aes(x="", y=Number, fill=Gender)) +
-  geom_bar(stat="identity", width=1) +
-  coord_polar("y", start=0) +
-  labs(x='', y='') +
-  theme_minimal() +
-  theme(axis.text.x = element_blank(), axis.ticks = element_blank())
-ggsave('piechart_gender.pdf')
-
 # Computes relative prevalence of attributes of interest across all (cleaned) 
 # DBpedia entries
 df_ungrouped <- df1 %>%
@@ -57,7 +48,9 @@ ggplot(data = df_ungrouped) +
   ylab("Entries Containing Attribute (%)") +
   scale_x_discrete(labels=c("Education", "Family", "Known For", "Net Worth", "Occupation")) +
   scale_y_continuous(limits = c(0, 0.2), n.breaks = 6, labels = scales::percent) +
-  labs(title = "Relative Prevalence of Metadata Attributes in Wikipedia Biographies")
+  labs(title = "Relative Prevalence of Metadata Attributes in Wikipedia Biographies") +
+  geom_hline(yintercept=0.05, color="red") +
+  annotate("text", x=3.5, y=0.06, label="Inclusion Threshold", size=3)
 ggsave('bargraph_ungrouped.pdf')
 
 # Computes relative prevalence of (cleaned) attributes of interest grouped by gender
@@ -110,6 +103,7 @@ ggsave('bargraph_fam_grouped.pdf')
 # Cleaned DBpedia Entries (excl. Fictional Characters & Entries w/o birthDate/birthYear): 975,235
 # Total Entries Merged Dataset: 631,258
 
+# Plots Normalized Frequency of Male vs Female Articles by Birth Year
 birth_year_df <- read_csv2('birth_year.csv') %>%
   mutate(Birth_Year = as.numeric(Birth_Year)) %>%
   drop_na() %>%
@@ -118,21 +112,12 @@ birth_year_df <- read_csv2('birth_year.csv') %>%
   pivot_wider(names_from = Gender, values_from = Birth_Year)
 
 ggplot(data = birth_year_df) +
-  aes(x = MALE) +
-  geom_histogram(fill = '#00BFC4', binwidth = 20) +
+  geom_histogram(aes(x=MALE, y = stat(count / sum(count)), fill = 'Male'), alpha=0.6, binwidth = 20) +
+  geom_histogram(aes(x=FEMALE, y = stat(count / sum(count)), fill = 'Female'), alpha=0.6, binwidth = 20) +
   theme_clean () +
   xlab("Birth Year") +
-  ylab("Frequency") +
+  ylab("Normalized Frequency") +
   scale_x_continuous(limits = c(1500, 2016)) +
-  labs(title = "Male Articles by Birth Year")
-ggsave('histogram_male.pdf')
-  
-ggplot(data = birth_year_df) +
-  aes(x = FEMALE) +
-  geom_histogram(fill = '#F8766D', binwidth = 20) +
-  theme_clean () +
-  xlab("Birth Year") +
-  ylab("Frequency") +
-  scale_x_continuous(limits = c(1500, 2016)) +
-  labs(title = "Female Articles by Birth Year")
-ggsave('histogram_female.pdf')
+  labs(title = "Distribution of Male vs Female Articles by Birth Year",
+       fill="Gender")
+ggsave('histogram_gender_birthyear.pdf')
